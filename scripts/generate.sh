@@ -126,8 +126,8 @@ RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-
 echo "# install geckodriver
 RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz \
   && cd /tmp \
-  && tar -xvzf geckodriver*
-  && chmod +x geckodriver
+  && tar -xvzf geckodriver* \
+  && chmod +x geckodriver \
   && sudo mv geckodriver /usr/local/bin"
 
 echo "# install chromedriver
