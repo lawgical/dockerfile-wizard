@@ -15,7 +15,7 @@ image_config: &image_config
 
   LINUX_VERSION: DEBIAN_JESSIE
 
-  RUBY_VERSION_NUM: 2.0.0
+  RUBY_VERSION_NUM: 2.0.0-p195
 
   NODE_VERSION_NUM: latest-v4
 
