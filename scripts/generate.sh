@@ -110,10 +110,10 @@ EOF
 echo "ENV DISPLAY :99"
 
 echo "# install firefox
-RUN sudo apt-get remove firefox-mozilla-build binutils \
-  && sudo sh -c \"echo 'deb http://ftp.hr.debian.org/debian sid main' >> /etc/apt/sources.list\" \
-  && sudo apt-get update  \
-  && sudo apt-get install -t sid firefox \
+RUN apt-get remove firefox-mozilla-build binutils \
+  && sh -c \"echo 'deb http://ftp.hr.debian.org/debian sid main' >> /etc/apt/sources.list\" \
+  && apt-get update  \
+  && apt-get install -t sid firefox \
   && firefox --version"
 
 echo "# install chrome
@@ -128,7 +128,7 @@ RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/geckodr
   && cd /tmp \
   && tar -xvzf geckodriver* \
   && chmod +x geckodriver \
-  && sudo mv geckodriver /usr/local/bin"
+  && mv geckodriver /usr/local/bin"
 
 echo "# install chromedriver
 RUN apt-get -y install libgconf-2-4 \
