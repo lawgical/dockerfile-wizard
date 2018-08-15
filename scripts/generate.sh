@@ -110,8 +110,7 @@ EOF
 echo "ENV DISPLAY :99"
 
 echo "# install firefox
-RUN apt-get remove firefox-mozilla-build binutils \
-  && sh -c \"echo 'deb http://ftp.hr.debian.org/debian sid main' >> /etc/apt/sources.list\" \
+RUN sh -c \"echo 'deb http://ftp.hr.debian.org/debian sid main' >> /etc/apt/sources.list\" \
   && apt-get update  \
   && apt-get install -t sid firefox \
   && firefox --version"
