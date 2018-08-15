@@ -110,10 +110,10 @@ EOF
 echo "ENV DISPLAY :99"
 
 echo "# install firefox
-RUN sh -c \"echo 'deb http://ftp.hr.debian.org/debian sid main' >> /etc/apt/sources.list\" \
-  && apt-get update  \
-  && apt-get install -t sid firefox \
-  && firefox --version"
+RUN apt-get update \
+  && apt-get install libpango1.0-0  \
+  && apt-get install firefox \
+  && ln -sf /usr/lib/firefox/firefox /usr/bin/firefox"
 
 echo "# install chrome
 RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
