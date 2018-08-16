@@ -110,16 +110,11 @@ EOF
 echo "ENV DISPLAY :99"
 
 echo "# install firefox
-RUN apt-get update -qqy \
-  && apt-get -qqy --no-install-recommends install firefox \
-  && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
-  && wget --no-verbose -O /tmp/firefox.tar.bz2 https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US \
-  && apt-get -y purge firefox \
-  && rm -rf /opt/firefox \
-  && tar -C /opt -xjf /tmp/firefox.tar.bz2 \
-  && rm /tmp/firefox.tar.bz2 \
-  && mv /opt/firefox /opt/firefox-latest \
-  && ln -fs /opt/firefox-latest/firefox /usr/bin/firefox"
+RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/firefox.deb https://s3.amazonaws.com/circle-downloads/firefox-mozilla-build_47.0.1-0ubuntu1_amd64.deb \
+  && echo 'ef016febe5ec4eaf7d455a34579834bcde7703cb0818c80044f4d148df8473bb  /tmp/firefox.deb' | sha256sum -c \
+  && dpkg -i /tmp/firefox.deb || apt-get -f install  \
+  && apt-get install -y libgtk3.0-cil-dev libasound2 libasound2 libdbus-glib-1-2 libdbus-1-3 \
+  && rm -rf /tmp/firefox.deb"
 
 echo "# install chrome
 RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
@@ -129,11 +124,14 @@ RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-
        \"/opt/google/chrome/google-chrome\""
 
 echo "# install geckodriver
-RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz \
-  && cd /tmp \
-  && tar -xvzf geckodriver* \
-  && chmod +x geckodriver \
-  && mv geckodriver /usr/local/bin"
+RUN export GECKODRIVER_LATEST_RELEASE_URL=$(curl https://api.github.com/repos/mozilla/geckodriver/releases/latest | jq -r ".assets[] | select(.name | test(\"linux64\")) | .browser_download_url") \
+      && curl --silent --show-error --location --fail --retry 3 --output /tmp/geckodriver_linux64.tar.gz \"$GECKODRIVER_LATEST_RELEASE_URL\" \
+      && cd /tmp \
+      && tar xf geckodriver_linux64.tar.gz \
+      && rm -rf geckodriver_linux64.tar.gz \
+      && sudo mv geckodriver /usr/local/bin/geckodriver \
+      && sudo chmod +x /usr/local/bin/geckodriver \
+      && geckodriver --version"
 
 echo "# install chromedriver
 RUN apt-get -y install libgconf-2-4 \

@@ -135,13 +135,14 @@ case "$BROWSERS" in
     perl -i -pe 's/# browser tools \(Xvfb, PhantomJS, Firefox, Chrome, Chromedriver\): true, false/true/' .circleci/config.yml
     ;;
   *)
-    perl -i -pe 's/# browser tools \(Xvfb, PhantomJS, Firefox, Chrome, Chromedriver\): true, false/false/' .circleci/config.yml
+    perl -i -pe 's/# browser tools \(Xvfb, PhantomJS, Firefox, Geckodriver, Chrome, Chromedriver\): true, false/false/' .circleci/config.yml
     perl -i -pe "s/- run: # phantomjs/# - run: # phantomjs/" .circleci/config.yml
     perl -i -pe "s/name: verify phantomjs/# name: verify phantomjs/" .circleci/config.yml
     perl -i -pe "s/command: Xvfb/# command: Xvfb/" .circleci/config.yml
     perl -i -pe "s/background: true/# background: true/" .circleci/config.yml
     perl -i -pe "s/- run: phantomjs/# - run: phantomjs/" .circleci/config.yml
     perl -i -pe "s/- run: firefox/# - run: firefox/" .circleci/config.yml
+    perl -i -pe "s/- run: geckodriver/# - run: geckodriver/" .circleci/config.yml
     perl -i -pe "s/- run: google-chrome/# - run: google-chrome/" .circleci/config.yml
     perl -i -pe "s/- run: chromedriver/# - run: chromedriver/" .circleci/config.yml
     ;;
