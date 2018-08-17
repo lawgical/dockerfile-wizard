@@ -128,8 +128,8 @@ RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/geckodr
       && cd /tmp \
       && tar xf geckodriver_linux64.tar.gz \
       && rm -rf geckodriver_linux64.tar.gz \
-      && sudo mv geckodriver /usr/local/bin/geckodriver \
-      && sudo chmod +x /usr/local/bin/geckodriver \
+      && mv geckodriver /usr/local/bin/geckodriver \
+      && chmod +x /usr/local/bin/geckodriver \
       && geckodriver --version"
 
 echo "# install chromedriver
