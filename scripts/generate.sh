@@ -118,11 +118,6 @@ RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/firefox
   && apt-get install -y libgtk3.0-cil-dev libasound2 libasound2 libdbus-glib-1-2 libdbus-1-3 \
   && rm -rf /tmp/firefox.deb"
 
-echo "# upgrade firefox
-RUN sh -c \"echo 'deb http://ftp.hr.debian.org/debian sid main' >> /etc/apt/sources.list\" \
-  && yes | apt-get install -t sid firefox \
-  && firefox --version"
-
 echo "# install chrome
 RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
   && (dpkg -i /tmp/google-chrome-stable_current_amd64.deb || apt-get -fy install)  \
