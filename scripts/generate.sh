@@ -101,13 +101,14 @@ echo "RUN apt-get update && apt-get -y install lsb-release unzip"
 if [ $BROWSERS = "true" ] ; then
 cat << EOF
 RUN if [ \$(grep 'VERSION_ID="8"' /etc/os-release) ] ; then \\
-    echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list && \\
     apt-get update && apt-get -y install -t jessie-backports xvfb phantomjs \\
 ; else \\
 		apt-get update && apt-get -y install xvfb phantomjs \\
 ; fi
 EOF
-echo "ENV DISPLAY :99"
+
+echo "ENV DISPLAY :99\
+  && RUN Xvfb :99 -ac &"
 
 echo "# install firefox
 RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/firefox.deb https://s3.amazonaws.com/circle-downloads/firefox-mozilla-build_47.0.1-0ubuntu1_amd64.deb \
@@ -115,6 +116,11 @@ RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/firefox
   && dpkg -i /tmp/firefox.deb || apt-get -f install  \
   && apt-get install -y libgtk3.0-cil-dev libasound2 libasound2 libdbus-glib-1-2 libdbus-1-3 \
   && rm -rf /tmp/firefox.deb"
+
+echo "# upgrade firefox
+RUN echo 'deb http://ftp.hr.debian.org/debian sid main' >> /etc/apt/sources.list \
+  && yes | apt-get install -t sid firefox \
+  && firefox --version"
 
 echo "# install chrome
 RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
