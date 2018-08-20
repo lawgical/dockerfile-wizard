@@ -101,6 +101,7 @@ echo "RUN apt-get update && apt-get -y install lsb-release unzip"
 if [ $BROWSERS = "true" ] ; then
 cat << EOF
 RUN if [ \$(grep 'VERSION_ID="8"' /etc/os-release) ] ; then \\
+    echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list && \\
     apt-get update && apt-get -y install -t jessie-backports xvfb phantomjs \\
 ; else \\
 		apt-get update && apt-get -y install xvfb phantomjs \\
